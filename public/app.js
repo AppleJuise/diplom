@@ -80,6 +80,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
         });
     })
 
+    // (document.querySelector("#username")).addEventListener('keypress', (e) => {
+    //     if (e.key === "Enter") {
+    //         e.preventDefault();
+    //         joinChat.onclick();
+    //     }
+    // })
 
     socket.on('previous button1', function (data) {
         console.log('previous button', data.currentSongIndex)
@@ -88,12 +94,16 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     socket.on('pause button1', function (data) {
         console.log('pause button')
-        audio.pause()
+        if (!audio.paused) {
+            audio.pause()
+        }
     });
 
     socket.on('play button1', function (data) {
         console.log('play button')
-        audio.play()
+        if (audio.paused) {
+            audio.play()
+        }
     });
 
     socket.on('next button1', function (data) {
