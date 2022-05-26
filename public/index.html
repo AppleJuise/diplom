@@ -1,0 +1,71 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Music Together</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <div id="login-area">
+            <div class="row">
+                <div class="large-7 medium-7 small-12 columns small-centered" style="display: block;">
+                    <form id="login-form">
+                        <h2>Music Together</h2>
+                        <p id="error-msg"></p>
+                        <input type="text" name="username" placeholder="Введите имя" id="username">
+                        <input type="text" name="room" placeholder="Введите название комнаты" id="room">
+                        <button class="btn btn-primary" type="button" id="joinChat">Присоединиться</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="play-area" style="display: none;">
+            <div class="large-8 columns small-centered">
+                <h2>Music Together</h2>
+                <div class="chat-wrap">
+                    <div class="top">
+                        <h4 class="room-title"></h4>
+                        <h5 id="numberClients"></h5>
+                    </div>
+                    <ul id="messages">
+                    </ul>
+                    <form id="message-form">
+                        <div class="input-group">
+                            <input type="text" placeholder="Сообщение" class="input-group-field" id="message">
+                            <div class="input-group-button">
+                                <button class="btn btn-primary" type="button" id="sendMessage">Отправить</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <form>
+                <div id="inputURL">
+                    <input type="text" id="videoUrl" placeholder="Введите URL">
+                </div>
+                <div id="buttonURL">
+                    <button class="btn btn-primary" id="getInfoBtn" type="button"
+                        style="width: 150px;">Добавить</button>
+                </div>
+            </form>
+            <div id="audioConteiner">
+                <img id="videoThumbnail" alt="">
+                <h1 class="mb-1" id="videoTitle"></h1>
+                <small class="text-muted d-block lead" id="videoAuthor"></small>
+                <audio id="videoAudio" controls>
+                </audio>
+                <button class="btn btn-primary" type="button" id="previousSong">Предыдущий</button>
+                <button class="btn btn-primary" type="button" id="nextSong">Следующий</button>
+            </div>
+            <ul id="playlist"></ul>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+
+</body>
+
+</html>
