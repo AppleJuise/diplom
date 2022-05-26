@@ -151,7 +151,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     })
 
     audio.addEventListener('timeupdate', () => {
-        if (Math.abs(audio.currentTime - slider) > 0.5) {
+        if (Math.abs(audio.currentTime - slider) > 1) {
             console.log('WOOPS')
             socket.emit('slider time', { currentTime: audio.currentTime })
         }
