@@ -94,16 +94,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     socket.on('pause button1', function (data) {
         console.log('pause button')
-        if (!audio.paused) {
-            audio.pause()
-        }
+        audio.pause()
     });
 
     socket.on('play button1', function (data) {
         console.log('play button')
-        if (audio.paused) {
-            audio.play()
-        }
+        audio.play()
     });
 
     socket.on('next button1', function (data) {
@@ -133,12 +129,16 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     audio.addEventListener('pause', () => {
         console.log('PAUSE')
-        socket.emit('pause button', { flag: false })
+        setTimeout(() => {
+            if (audio.paused) { socket.emit('pause button', { flag: false }) }
+        }, 300)
     })
 
     audio.addEventListener('play', () => {
         console.log('PLAY')
-        socket.emit('play button', { flag: true })
+        setTimeout(() => {
+            if (!audio.paused) { socket.emit('play button', { flag: true }) }
+        }, 300)
     })
 
     nextSong.addEventListener('click', () => {
