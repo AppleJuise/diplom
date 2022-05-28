@@ -32,9 +32,9 @@ io.on('connection', function (socket) {
                     }
                 })
                 socket.to(userData.room).emit('clients', { clientNumbers })
-                console.log('disconect ' + clientNumbers)
+                //console.log('disconect ' + clientNumbers)
                 socket.leave(connectedUsers[socket.id])
-                console.log('Пользователь вышел.')
+                //console.log('Пользователь вышел.')
                 socket.to(userData.room).emit('message', {
                     username: 'Система',
                     text: userData.username + ' вышел!',
@@ -52,29 +52,29 @@ io.on('connection', function (socket) {
         })
 
         socket.on('choosing song', (data) => {
-            console.log('choosing song')
+            //console.log('choosing song')
             socket.to(connectedUsers[socket.id].room).emit('choosing song1', data)
         })
 
         socket.on('previous button', (data) => {
-            console.log('previous button')
+            // console.log('previous button')
             socket.to(connectedUsers[socket.id].room).emit('previous button1', data)
         })
         socket.on('pause button', (data) => {
-            console.log('pause button')
+            //console.log('pause button')
             socket.to(connectedUsers[socket.id].room).emit('pause button1', data)
         })
         socket.on('play button', (data) => {
-            console.log('play button')
+            //console.log('play button')
             socket.to(connectedUsers[socket.id].room).emit('play button1', data)
         })
         socket.on('next button', (data) => {
-            console.log('next button')
+            // console.log('next button')
             socket.to(connectedUsers[socket.id].room).emit('next button1', data)
         })
 
         socket.on('slider time', (data) => {
-            console.log('slider time')
+            // console.log('slider time')
             socket.to(connectedUsers[socket.id].room).emit('slider time1', data)
         })
 
@@ -115,7 +115,7 @@ io.on('connection', function (socket) {
                         }
                     })
                     io.in(req.room).emit('clients', { clientNumbers })
-                    console.log('join ' + clientNumbers)
+                    //console.log('join ' + clientNumbers)
                     callback({
                         nameAvailable: true
                     });
@@ -185,12 +185,11 @@ const getAudioStream = async (req, res) => {
 
         const { itag, container, contentLength } = audioFormat
 
-        // define headers
         const rangeHeader = req.headers.range || null
 
-        console.log(`rangeHeader -->`, rangeHeader);
+        //console.log(`rangeHeader -->`, rangeHeader);
         const rangePosition = (rangeHeader) ? rangeHeader.replace(/bytes=/, "").split("-") : null
-        console.log(`rangePosition`, rangePosition);
+        //console.log(`rangePosition`, rangePosition);
         const startRange = rangePosition ? parseInt(rangePosition[0], 10) : 0;
         const endRange = rangePosition && rangePosition[1].length > 0 ? parseInt(rangePosition[1], 10) : contentLength - 1;
         const chunksize = (endRange - startRange) + 1;

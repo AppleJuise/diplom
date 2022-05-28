@@ -17,8 +17,8 @@ const songsForPlaylist = []
 let currentSongIndex = 0
 
 window.addEventListener('DOMContentLoaded', (event) => {
-    console.log('DOM fully loaded and parsed');
-    console.log("currentSongIndex", currentSongIndex)
+    //console.log('DOM fully loaded and parsed');
+    //console.log("currentSongIndex", currentSongIndex)
     joinChat.addEventListener('click', (e) => {
         if (document.querySelector("#username").value && document.querySelector("#room").value) {
             joinChatFunction()
@@ -43,7 +43,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         const username = document.querySelector("#username").value
         const room = document.querySelector("#room").value
         socket.on('clients', (data) => {
-            console.log('clientNumbers', data.clientNumbers)
+            //console.log('clientNumbers', data.clientNumbers)
             numberClients.innerHTML = `${data.clientNumbers}`
         });
 
@@ -58,9 +58,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
             })
             const songIndex = songsForPlaylist.length - 1
             //console.log('object',)
-            console.log('СЮДА СМОТРИ', songsForPlaylist.length - 1)
-            item.innerHTML = `<button class="playlistSong" value="${data.videoUrl}" type="button" name="${songIndex}"><img src="${data.thumbnail}"></img><div>${data.title}</div><div>${data.author}</div></button>`
+            //console.log('СЮДА СМОТРИ', songsForPlaylist.length - 1)
+            item.innerHTML = `<div class="playlistSong" title="${songIndex} ${data.videoUrl}" ><div class="playlist-container"><div class="image-container"><img src="${data.thumbnail}" class="playlist-image"></img></div><div class="container-info"><div class="playlist-title">${data.title}</div><div class="playlist-author">${data.author}</div></div></div></div>`
             playlist.appendChild(item)
+            playlist.scrollTop = playlist.scrollHeight
         })
 
 
@@ -70,7 +71,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             const songArray = Object.entries(data)
 
             songArray.forEach(element => {
-                console.log('thumbnail', element[1].thumbnail)
+                //console.log('thumbnail', element[1].thumbnail)
                 songsForPlaylist.push({
                     videoUrl: element[1].videoUrl,
                     thumbnail: element[1].thumbnail,
@@ -79,10 +80,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 })
                 const songIndex = songsForPlaylist.length - 1
                 //console.log('object',)
-                console.log('СЮДА СМОТРИ', songsForPlaylist.length - 1)
+                //console.log('СЮДА СМОТРИ', songsForPlaylist.length - 1)
                 const item = document.createElement('li')
-                item.innerHTML = `<button class="playlistSong" type="button"  value="${element[1].videoUrl}" name="${songIndex}"><img src="${element[1].thumbnail}"></img><div>${element[1].title}</div><div>${element[1].author}</div></button>`
+                item.innerHTML = `<div class="playlistSong" title="${songIndex} ${element[1].videoUrl}" ><div class="playlist-container"><div class="image-container"><img src="${element[1].thumbnail}" class="playlist-image"></img></div><div class="container-info"><div class="playlist-title">${element[1].title}</div><div class="playlist-author">${element[1].author}</div></div></div></div>`
                 playlist.appendChild(item)
+                playlist.scrollTop = playlist.scrollHeight
             });
         })
 
@@ -108,34 +110,34 @@ window.addEventListener('DOMContentLoaded', (event) => {
     // })
 
     socket.on('previous button1', function (data) {
-        console.log('previous button', data.currentSongIndex)
+        //console.log('previous button', data.currentSongIndex)
         getVideoInfo(songsForPlaylist[data.currentSongIndex].videoUrl)
     });
 
     socket.on('pause button1', function (data) {
-        console.log('pause button')
+        //console.log('pause button')
         audio.pause()
     });
 
     socket.on('play button1', function (data) {
-        console.log('play button')
+        //console.log('play button')
         audio.play()
     });
 
     socket.on('next button1', function (data) {
-        console.log('next button', data.currentSongIndex)
+        //console.log('next button', data.currentSongIndex)
         getVideoInfo(songsForPlaylist[data.currentSongIndex].videoUrl)
     });
 
     socket.on('choosing song1', function (data) {
         currentSongIndex = data.currentSongIndex
-        console.log('choosing song', currentSongIndex)
-        console.log('choosing song', data.videoUrl)
+        //console.log('choosing song', currentSongIndex)
+        //console.log('choosing song', data.videoUrl)
         getVideoInfo(data.videoUrl)
     });
 
     socket.on('slider time1', function (data) {
-        console.log('slider time', data.currentTime)
+        //console.log('slider time', data.currentTime)
         audio.currentTime = data.currentTime
     });
 
@@ -148,14 +150,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
     })
 
     audio.addEventListener('pause', () => {
-        console.log('PAUSE')
+        //console.log('PAUSE')
         setTimeout(() => {
             if (audio.paused) { socket.emit('pause button', { flag: false }) }
         }, 300)
     })
 
     audio.addEventListener('play', () => {
-        console.log('PLAY')
+        //console.log('PLAY')
         setTimeout(() => {
             if (!audio.paused) { socket.emit('play button', { flag: true }) }
         }, 300)
@@ -182,10 +184,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     audio.addEventListener('timeupdate', () => {
         if (Math.abs(audio.currentTime - slider) > 0.5) {
-            console.log('WOOPS')
+            //console.log('WOOPS')
             socket.emit('slider time', { currentTime: audio.currentTime })
         }
-        console.log('audio.currentTime', audio.currentTime)
+        //console.log('audio.currentTime', audio.currentTime)
         slider = audio.currentTime
     });
 
@@ -229,11 +231,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     document.querySelector("#playlist").addEventListener('click', (e) => {
         const nearTag = e.target.closest('.playlistSong')
-        console.log('nearTag.value', nearTag.value)
-        console.log('nearTag.name', nearTag.name)
-        currentSongIndex = nearTag.name
-        socket.emit('choosing song', { videoUrl: nearTag.value, currentSongIndex })
-        getVideoInfo(nearTag.value)
+        //console.log('nearTag.title', nearTag.title)
+        const indexAndUrl = nearTag.title.split(' ')
+
+        currentSongIndex = indexAndUrl[0]
+        socket.emit('choosing song', { videoUrl: indexAndUrl[1], currentSongIndex })
+        getVideoInfo(indexAndUrl[1])
     });
 
     function getInfoFunction() {
@@ -262,11 +265,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
                         })
                         const songIndex = songsForPlaylist.length - 1
                         //console.log('object',)
-                        console.log('СЮДА СМОТРИ', songsForPlaylist.length - 1)
+                        //console.log('СЮДА СМОТРИ', songsForPlaylist.length - 1)
 
                         const item = document.createElement('li')
-                        item.innerHTML = `<button class="playlistSong" value="${videoUrl}" name="${songIndex}" type="button"><img src="${thumbnail}"></img><div>${infoMusic.title}</div><div>${infoMusic.author}</div></button>`
+                        item.innerHTML = `<div class="playlistSong" title="${songIndex} ${videoUrl}" ><div class="playlist-container"><div class="image-container"><img src="${thumbnail}" class="playlist-image"></img></div><div class="container-info"><div class="playlist-title">${infoMusic.title}</div><div class="playlist-author">${infoMusic.author}</div></div></div></div>`
                         playlist.appendChild(item)
+                        playlist.scrollTop = playlist.scrollHeight
                         socket.emit('add song', {
                             videoUrl,
                             thumbnail,
