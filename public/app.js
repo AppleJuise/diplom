@@ -19,7 +19,27 @@ let currentSongIndex = 0
 window.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed');
     console.log("currentSongIndex", currentSongIndex)
-    joinChat.addEventListener('click', () => {
+    joinChat.addEventListener('click', (e) => {
+        if (document.querySelector("#username").value && document.querySelector("#room").value) {
+            joinChatFunction()
+        }
+    })
+
+    document.querySelector("#username").addEventListener('keydown', (e) => {
+        if (document.querySelector("#username").value && document.querySelector("#room").value && e.keyCode === 13) {
+            e.preventDefault()
+            joinChatFunction()
+        }
+    })
+
+    document.querySelector("#room").addEventListener('keydown', (e) => {
+        if (document.querySelector("#username").value && document.querySelector("#room").value && e.keyCode === 13) {
+            e.preventDefault()
+            joinChatFunction()
+        }
+    })
+
+    function joinChatFunction() {
         const username = document.querySelector("#username").value
         const room = document.querySelector("#room").value
         socket.on('clients', (data) => {
@@ -71,14 +91,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
             room
         }, function (data) {
             if (data.nameAvailable) {
-                roomTitle.innerHTML = `Ваша комната: ${room}`
+                roomTitle.innerHTML = `#${room}`
                 playArea.style.display = "block"
                 loginArea.style.display = "none"
             } else {
                 errorMessage.innerHTML = `${data.error}`
             }
         });
-    })
+    }
 
     // (document.querySelector("#username")).addEventListener('keypress', (e) => {
     //     if (e.key === "Enter") {
@@ -171,12 +191,30 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     socket.on('message', function (message) {
         const item = document.createElement('li')
-        item.innerHTML = `<span>${message.username}</span>: ${message.text}`
+        if (message.username === 'Система') {
+            item.innerHTML = `<span style="font-weight:800">${message.username}</span>: ${message.text}`
+        }
+        else {
+            item.innerHTML = `<span style="font-weight:bold">${message.username}</span>: ${message.text}`
+        }
         messages.appendChild(item)
+        messages.scrollTop = messages.scrollHeight
     });
 
 
-    sendMessage.addEventListener('click', () => {
+    sendMessage.addEventListener('click', (e) => {
+        sendMessageFunction()
+    })
+
+    document.querySelector("#message").addEventListener('keydown', (e) => {
+        if (e.keyCode === 13) {
+            e.preventDefault()
+            sendMessageFunction()
+        }
+
+    })
+
+    function sendMessageFunction() {
         const message = document.querySelector("#message")
         const username = document.querySelector("#username").value
         if (message.value) {
@@ -186,8 +224,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             })
         }
         message.value = ''
-
-    })
+    }
 
 
     document.querySelector("#playlist").addEventListener('click', (e) => {
@@ -199,7 +236,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         getVideoInfo(nearTag.value)
     });
 
-    document.querySelector("#getInfoBtn").addEventListener('click', () => {
+    function getInfoFunction() {
         try {
 
             const videoUrl = document.querySelector("#videoUrl").value
@@ -248,6 +285,18 @@ window.addEventListener('DOMContentLoaded', (event) => {
             alert(`Failed to get video info`)
         }
         document.querySelector("#videoUrl").value = ''
+    }
+
+    document.querySelector("#getInfoBtn").addEventListener('click', (e) => {
+        getInfoFunction()
+    })
+
+    document.querySelector("#videoUrl").addEventListener('keydown', (e) => {
+
+        if (e.keyCode === 13) {
+            e.preventDefault()
+            getInfoFunction()
+        }
     })
 
     function initializePlayer(videoInfo) {

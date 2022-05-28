@@ -9,11 +9,11 @@
 
 <body>
     <div class="container">
+        <header>Music Together</header>
         <div id="login-area">
             <div class="row">
-                <div class="large-7 medium-7 small-12 columns small-centered" style="display: block;">
+                <div style="display: block;">
                     <form id="login-form">
-                        <h2>Music Together</h2>
                         <p id="error-msg"></p>
                         <input type="text" name="username" placeholder="Введите имя" id="username">
                         <input type="text" name="room" placeholder="Введите название комнаты" id="room">
@@ -24,35 +24,36 @@
         </div>
         <div class="row" id="play-area" style="display: none;">
             <div class="large-8 columns small-centered">
-                <h2>Music Together</h2>
                 <div class="chat-wrap">
-                    <div class="top">
-                        <h4 class="room-title"></h4>
-                        <h5 id="numberClients"></h5>
-                    </div>
-                    <ul id="messages">
-                    </ul>
-                    <form id="message-form">
-                        <div class="input-group">
-                            <input type="text" placeholder="Сообщение" class="input-group-field" id="message">
-                            <div class="input-group-button">
-                                <button class="btn btn-primary" type="button" id="sendMessage">Отправить</button>
+                    <div id="message-block">
+                        <div class="top">
+                            <div class="rignt-align">
+                                <div class="room-title inline"></div>
+                                <div class="inline"><img id="clients-numbers" src="clients.png"></div>
+                                <div id="numberClients" class="inline"></div>
                             </div>
                         </div>
-                    </form>
+                        <ul id="messages">
+                        </ul>
+                        <form id="message-form">
+                            <div class="input-group">
+                                <input type="text" placeholder="Сообщение" class="message-el" id="message">
+                            </div>
+                            <div class="input-group">
+                                <button class="message-el" type="button" id="sendMessage">Отправить</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
             <form>
-                <div id="inputURL">
-                    <input type="text" id="videoUrl" placeholder="Введите URL">
-                </div>
-                <div id="buttonURL">
-                    <button class="btn btn-primary" id="getInfoBtn" type="button"
-                        style="width: 150px;">Добавить</button>
+                <div>
+                    <input type="text" id="videoUrl" placeholder="Введите URL" class="message-el">
+                    <button class="message-el" id="getInfoBtn" type="button">Добавить</button>
                 </div>
             </form>
             <div id="audioConteiner">
-                <img id="videoThumbnail" alt="">
+                <img id="videoThumbnail" src="white_wheel.png">
                 <h1 class="mb-1" id="videoTitle"></h1>
                 <small class="text-muted d-block lead" id="videoAuthor"></small>
                 <audio id="videoAudio" controls>
@@ -62,6 +63,8 @@
             </div>
             <ul id="playlist"></ul>
         </div>
+
+    </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="app.js"></script>
