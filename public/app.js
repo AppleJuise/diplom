@@ -102,25 +102,18 @@ window.addEventListener('DOMContentLoaded', (event) => {
         });
     }
 
-    // (document.querySelector("#username")).addEventListener('keypress', (e) => {
-    //     if (e.key === "Enter") {
-    //         e.preventDefault();
-    //         joinChat.onclick();
-    //     }
-    // })
-
     socket.on('previous button1', function (data) {
         //console.log('previous button', data.currentSongIndex)
         getVideoInfo(songsForPlaylist[data.currentSongIndex].videoUrl)
     });
 
     socket.on('pause button1', function (data) {
-        //console.log('pause button')
+        console.log('SOCKET ON pause button')
         audio.pause()
     });
 
     socket.on('play button1', function (data) {
-        //console.log('play button')
+        console.log('SOCKET ON play button')
         audio.play()
     });
 
@@ -150,14 +143,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
     })
 
     audio.addEventListener('pause', () => {
-        //console.log('PAUSE')
+        console.log('PAUSE')
         setTimeout(() => {
             if (audio.paused) { socket.emit('pause button', { flag: false }) }
         }, 300)
     })
 
     audio.addEventListener('play', () => {
-        //console.log('PLAY')
+        console.log('PLAY')
         setTimeout(() => {
             if (!audio.paused) { socket.emit('play button', { flag: true }) }
         }, 300)

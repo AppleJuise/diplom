@@ -61,11 +61,11 @@ io.on('connection', function (socket) {
             socket.to(connectedUsers[socket.id].room).emit('previous button1', data)
         })
         socket.on('pause button', (data) => {
-            //console.log('pause button')
+            console.log('SOCKET ON pause button')
             socket.to(connectedUsers[socket.id].room).emit('pause button1', data)
         })
         socket.on('play button', (data) => {
-            //console.log('play button')
+            console.log('SOCKET ON play button')
             socket.to(connectedUsers[socket.id].room).emit('play button1', data)
         })
         socket.on('next button', (data) => {
